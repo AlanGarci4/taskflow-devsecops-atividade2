@@ -2,14 +2,8 @@ name: IaC Scan
 
 on:
   pull_request:
-    paths:
-      - "**/*.tf"
-      - "**/docker-compose*.yml"
   push:
     branches: [main]
-    paths:
-      - "**/*.tf"
-      - "**/docker-compose*.yml"
   workflow_dispatch:
 
 permissions:

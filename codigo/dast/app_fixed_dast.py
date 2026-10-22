@@ -181,14 +181,7 @@ def new_task():
 
 @app.route("/debug/info")
 def debug_info_removed():
-    import platform
-    import sys
-
-    return {
-        "python_version": sys.version,
-        "platform": platform.platform(),
-        "secret_key": app.config["SECRET_KEY"],
-    }
+    abort(404)
 
 
 if __name__ == "__main__":

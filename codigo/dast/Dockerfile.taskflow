@@ -1,0 +1,15 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY codigo/dast ./codigo/dast
+
+ENV TASKFLOW_SECRET_KEY=devsecops-lab-secret-do-not-use-in-prod
+ENV FLASK_DEBUG=false
+
+EXPOSE 5000
+
+CMD ["python", "codigo/dast/app_fixed_dast.py"]

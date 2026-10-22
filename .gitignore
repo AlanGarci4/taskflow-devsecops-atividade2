@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+
+# Local databases and env files
+*.db
+.env
+.env.local
+
+# VS Code
+.vscode/
+
+# Terraform local state
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl

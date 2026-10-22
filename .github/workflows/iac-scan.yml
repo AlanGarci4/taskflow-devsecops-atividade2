@@ -1,0 +1,45 @@
+name: IaC Scan
+
+on:
+  pull_request:
+    paths:
+      - "**/*.tf"
+      - "**/docker-compose*.yml"
+  push:
+    branches: [main]
+    paths:
+      - "**/*.tf"
+      - "**/docker-compose*.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checkov:
+    name: Checkov
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: .
+          quiet: true
+
+  trivy-config:
+    name: Trivy Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Trivy config scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          hide-progress: true
+          severity: HIGH,CRITICAL
+          exit-code: "1"

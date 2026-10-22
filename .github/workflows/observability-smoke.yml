@@ -1,0 +1,57 @@
+name: Observability Smoke
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: JSON logs smoke check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build app image
+        run: docker build -t taskflow:obs -f codigo/dast/Dockerfile.taskflow .
+
+      - name: Run app and capture logs
+        run: |
+          docker run -d --name taskflow-obs -p 5000:5000 \
+            -e TASKFLOW_SECRET_KEY=obs-smoke-secret \
+            -e FLASK_DEBUG=false \
+            taskflow:obs python codigo/observabilidade/app_instrumented.py
+
+          for i in $(seq 1 20); do
+            if curl -fsS http://localhost:5000/healthz >/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+
+          curl -fsS http://localhost:5000/login >/dev/null
+          docker logs taskflow-obs > app.log
+
+      - name: Assert logs have request_id and no password leakage
+        run: |
+          grep '"request_id"' app.log
+          if grep -E 'senha|password|token|cookie' app.log; then
+            echo "Sensitive field found in logs"
+            exit 1
+          fi
+
+      - name: Upload logs artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: observability-smoke-logs
+          path: app.log
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f taskflow-obs || true

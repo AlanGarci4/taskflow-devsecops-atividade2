@@ -1,0 +1,4 @@
+10016	WARN	Cookie No HttpOnly Flag - ambiente de laboratorio sem sessao em HTTPS
+10054	WARN	Cookie Without SameSite Attribute - aceito temporariamente para compatibilidade local
+10038	WARN	Content Security Policy Header Not Set - registrado e tratado no backlog tecnico
+10021	IGNORE	X-Content-Type-Options Header Missing - falso positivo em endpoint de health check

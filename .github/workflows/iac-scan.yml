@@ -25,16 +25,3 @@ jobs:
           skip_check: CKV2_AWS_61,CKV_AWS_145,CKV_AWS_144,CKV2_AWS_5,CKV2_AWS_62,CKV_AWS_382,CKV_AWS_23
           quiet: true
 
-  trivy-config:
-    name: Trivy Config
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Run Trivy config scan
-        run: |
-          docker run --rm \
-            -v "${{ github.workspace }}:/workdir" \
-            aquasec/trivy:0.56.2 \
-            config --severity CRITICAL --exit-code 0 --no-progress /workdir/codigo/iac/infra

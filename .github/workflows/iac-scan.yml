@@ -25,3 +25,23 @@ jobs:
           skip_check: CKV2_AWS_61,CKV_AWS_145,CKV_AWS_144,CKV2_AWS_5,CKV2_AWS_62,CKV_AWS_382,CKV_AWS_23
           quiet: true
 
+  trivy-config:
+    name: Trivy Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Trivy CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo gpg --dearmor -o /usr/share/keyrings/trivy.gpg
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+
+      - name: Run Trivy config scan (gate)
+        run: |
+          trivy config --severity CRITICAL --exit-code 1 --no-progress codigo/iac/infra
+

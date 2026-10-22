@@ -37,6 +37,14 @@ jobs:
           docker logs taskflow
           exit 1
 
+      - name: Assert debug endpoint is not exposed
+        run: |
+          status=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:5000/debug/info || true)
+          if [ "$status" = "200" ]; then
+            echo "Security regression: /debug/info exposed"
+            exit 1
+          fi
+
       - name: Run OWASP ZAP Baseline
         uses: zaproxy/action-baseline@v0.14.0
         with:

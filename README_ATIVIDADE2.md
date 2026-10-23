@@ -36,3 +36,4 @@
 ## Observacoes
 - `.env` nunca deve ser versionado.
 - Segredos devem ser injetados por variaveis de ambiente/secrets.
+- Evidencias da simulacao de forca bruta e consultas usadas: `docs/observabilidade.md` e `docs/runbook-login-bruteforce.md`.

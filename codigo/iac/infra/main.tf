@@ -12,6 +12,15 @@ provider "aws" {
   region = var.aws_region
 }
 
+# Justificativas de excecao do lab para os skips aplicados no CI (Checkov):
+# - CKV2_AWS_61: ambiente didatico sem integração de evento S3 com Lambda.
+# - CKV_AWS_145: o lab usa criptografia SSE-S3 (AES256), sem KMS gerenciado.
+# - CKV_AWS_144: sem replicacao cross-region por custo e escopo da atividade.
+# - CKV2_AWS_5: SG isolado para demonstracao, sem acoplamento a recurso computacional.
+# - CKV2_AWS_62: sem notificacoes S3 para SNS/SQS no escopo deste exercicio.
+# - CKV_AWS_382: bucket de logs com acesso publico bloqueado e uso interno de auditoria.
+# - CKV_AWS_23: regra de egress ampla mantida para simplicidade do laboratorio.
+
 variable "aws_region" {
   type        = string
   description = "Regiao AWS"

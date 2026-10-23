@@ -17,7 +17,6 @@ Este código contém vulnerabilidades **intencionais** para fins didáticos
 ## Como executar localmente
 
 ```bash
-cd app-exemplo
 python3 -m venv .venv
 source .venv/bin/activate          # Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -35,7 +34,6 @@ cadastrados no banco SQLite (`taskflow.db`, criado automaticamente):
 ## Como executar com Docker
 
 ```bash
-cd app-exemplo
 docker build -t taskflow:vuln .
 docker run -p 5000:5000 taskflow:vuln
 ```
@@ -43,13 +41,15 @@ docker run -p 5000:5000 taskflow:vuln
 ## Estrutura
 
 ```
-app-exemplo/
+taskflow_pos_2026/
 ├── app.py              # Aplicação Flask (versão vulnerável, linha de base)
 ├── requirements.txt    # Dependências com CVEs conhecidas (uso proposital)
-├── Dockerfile           # Dockerfile inseguro (uso no Módulo 2 - Hardening)
-└── README.md            # Este arquivo
+├── Dockerfile          # Dockerfile inseguro (uso no Módulo 2 - Hardening)
+└── README.md           # Este arquivo
 ```
 
 Cada módulo cria, dentro da sua própria pasta `codigo/`, uma cópia ou um
 patch desta aplicação demonstrando o "antes" (vulnerável) e o "depois"
 (corrigido) referente ao tema daquele encontro.
+
+Para os entregáveis da Atividade 2, consulte `README_ATIVIDADE2.md` e `docs/iac.md`.

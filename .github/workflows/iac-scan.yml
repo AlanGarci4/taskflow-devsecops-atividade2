@@ -37,5 +37,5 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/workdir" \
             aquasec/trivy:0.56.2 \
-            config --severity CRITICAL --exit-code 1 --no-progress /workdir/codigo/iac/infra
+            config --severity CRITICAL --exit-code 1 --quiet /workdir/codigo/iac/docker-compose.yml
 

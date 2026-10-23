@@ -17,6 +17,23 @@
    - `cd codigo/observabilidade`
    - `docker compose up --build -d`
 
+## Arquitetura (resumo)
+- App TaskFlow corrigida roda em container proprio e e validada por DAST no pipeline.
+- Ambiente IaC usa Compose com redes separadas `frontend` e `backend`; banco acessivel apenas na rede interna.
+- Observabilidade usa stack Loki + Promtail + Grafana para ingestao, consulta e visualizacao de logs JSON com `request_id`.
+
+## Como disparar os workflows
+1. DAST (`.github/workflows/dast.yml`)
+   - Automatico em `pull_request` e `push` para `main`.
+   - Manual: Actions > DAST > Run workflow.
+2. IaC Scan (`.github/workflows/iac-scan.yml`)
+   - Automatico em `pull_request` e `push` para `main`.
+   - Manual: Actions > IaC Scan > Run workflow.
+3. Observability Smoke (`.github/workflows/observability-smoke.yml`)
+   - Automatico em `pull_request` e `push` para `main`.
+   - Manual: Actions > Observability Smoke > Run workflow.
+
 ## Observacoes
 - `.env` nunca deve ser versionado.
 - Segredos devem ser injetados por variaveis de ambiente/secrets.
+- Evidencias da simulacao de forca bruta e consultas usadas: `docs/observabilidade.md` e `docs/runbook-login-bruteforce.md`.

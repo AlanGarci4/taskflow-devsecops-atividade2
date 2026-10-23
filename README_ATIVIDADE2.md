@@ -7,7 +7,7 @@
 - `.github/workflows/dast.yml`: DAST com ZAP baseline e artefato.
 - `.github/workflows/iac-scan.yml`: Checkov + Trivy config como gates.
 - `.github/workflows/observability-smoke.yml`: smoke de logs JSON.
-- `docs/`: evidencias e runbook.
+- `docs/`: evidencias DAST/IaC/Observabilidade e runbook.
 
 ## Execucao local rapida
 1. DAST app corrigida:

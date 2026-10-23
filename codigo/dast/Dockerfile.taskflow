@@ -2,10 +2,10 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir "Flask>=3,<4" "Werkzeug>=3,<4"
 
 COPY codigo/dast ./codigo/dast
+COPY codigo/observabilidade ./codigo/observabilidade
 
 ENV TASKFLOW_SECRET_KEY=devsecops-lab-secret-do-not-use-in-prod
 ENV FLASK_DEBUG=false

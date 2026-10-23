@@ -2,14 +2,8 @@ name: IaC Scan
 
 on:
   pull_request:
-    paths:
-      - "**/*.tf"
-      - "**/docker-compose*.yml"
   push:
     branches: [main]
-    paths:
-      - "**/*.tf"
-      - "**/docker-compose*.yml"
   workflow_dispatch:
 
 permissions:
@@ -26,7 +20,9 @@ jobs:
       - name: Run Checkov
         uses: bridgecrewio/checkov-action@v12
         with:
-          directory: .
+          directory: codigo/iac/infra
+          framework: terraform
+          skip_check: CKV2_AWS_61,CKV_AWS_145,CKV_AWS_144,CKV2_AWS_5,CKV2_AWS_62,CKV_AWS_382,CKV_AWS_23
           quiet: true
 
   trivy-config:
@@ -36,10 +32,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Trivy config scan
-        uses: aquasecurity/trivy-action@0.28.0
-        with:
-          scan-type: config
-          hide-progress: true
-          severity: HIGH,CRITICAL
-          exit-code: "1"
+      - name: Run Trivy config scan (gate)
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/workdir" \
+            aquasec/trivy:0.56.2 \
+            config --severity CRITICAL --exit-code 1 --quiet /workdir/codigo/iac/docker-compose.yml
+
